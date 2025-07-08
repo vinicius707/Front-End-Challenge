@@ -221,18 +221,6 @@ export class CadastroComponent implements OnInit {
     return '';
   }
 
-  formatarCpf(event: any): void {
-    let valor = event.target.value.replace(/\D/g, '');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    event.target.value = valor;
-
-    // Atualiza o valor no formulário sem a formatação
-    const cpfLimpo = valor.replace(/\D/g, '');
-    this.cadastroForm.patchValue({ cpf: cpfLimpo });
-  }
-
   formatarTelefone(event: any): void {
     let valor = event.target.value.replace(/\D/g, '');
     if (valor.length === 11) {

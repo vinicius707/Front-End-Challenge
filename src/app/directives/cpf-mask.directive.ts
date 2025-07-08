@@ -2,7 +2,6 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[appCpfMask]',
-  standalone: true,
 })
 export class CpfMaskDirective {
   constructor(private el: ElementRef) {}
