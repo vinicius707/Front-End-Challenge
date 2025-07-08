@@ -3,13 +3,14 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { PessoasService, Pessoa } from './pessoas.service';
+import { PessoasService } from './pessoas.service';
+import { IPessoa } from '../interfaces/pessoa.interface';
 
 describe('PessoasService', () => {
   let service: PessoasService;
   let httpMock: HttpTestingController;
 
-  const mockPessoa: Pessoa = {
+  const mockPessoa: IPessoa = {
     id: 1,
     nome: 'João Silva',
     cpf: '12345678900',
@@ -18,7 +19,7 @@ describe('PessoasService', () => {
     telefone: '11999991111',
   };
 
-  const mockPessoas: Pessoa[] = [
+  const mockPessoas: IPessoa[] = [
     mockPessoa,
     {
       id: 2,
@@ -74,7 +75,7 @@ describe('PessoasService', () => {
 
   describe('addPessoa', () => {
     it('deve adicionar uma nova pessoa', () => {
-      const newPessoa: Omit<Pessoa, 'id'> = {
+      const newPessoa: Omit<IPessoa, 'id'> = {
         nome: 'Novo Usuário',
         cpf: '11122233344',
         sexo: 'M',
@@ -82,7 +83,7 @@ describe('PessoasService', () => {
         telefone: '11111111111',
       };
 
-      const expectedPessoa: Pessoa = { ...newPessoa, id: 3 };
+      const expectedPessoa: IPessoa = { ...newPessoa, id: 3 };
 
       service.addPessoa(newPessoa).subscribe((pessoa) => {
         expect(pessoa).toEqual(expectedPessoa);
@@ -97,7 +98,7 @@ describe('PessoasService', () => {
 
   describe('updatePessoa', () => {
     it('deve atualizar uma pessoa existente', () => {
-      const updatedPessoa: Pessoa = {
+      const updatedPessoa: IPessoa = {
         ...mockPessoa,
         nome: 'João Silva Atualizado',
       };

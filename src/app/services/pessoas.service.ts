@@ -1,15 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Pessoa {
-  id: number;
-  nome: string;
-  cpf: string;
-  sexo: string;
-  email: string;
-  telefone: string;
-}
+import { IPessoa } from '../interfaces/pessoa.interface';
 
 @Injectable({ providedIn: 'root' })
 export class PessoasService {
@@ -17,20 +9,20 @@ export class PessoasService {
 
   constructor(private http: HttpClient) {}
 
-  getPessoas(): Observable<Pessoa[]> {
-    return this.http.get<Pessoa[]>(this.apiUrl);
+  getPessoas(): Observable<IPessoa[]> {
+    return this.http.get<IPessoa[]>(this.apiUrl);
   }
 
-  getPessoa(id: number): Observable<Pessoa> {
-    return this.http.get<Pessoa>(`${this.apiUrl}/${id}`);
+  getPessoa(id: number): Observable<IPessoa> {
+    return this.http.get<IPessoa>(`${this.apiUrl}/${id}`);
   }
 
-  addPessoa(pessoa: Omit<Pessoa, 'id'>): Observable<Pessoa> {
-    return this.http.post<Pessoa>(this.apiUrl, pessoa);
+  addPessoa(pessoa: Omit<IPessoa, 'id'>): Observable<IPessoa> {
+    return this.http.post<IPessoa>(this.apiUrl, pessoa);
   }
 
-  updatePessoa(id: number, pessoa: Pessoa): Observable<Pessoa> {
-    return this.http.put<Pessoa>(`${this.apiUrl}/${id}`, pessoa);
+  updatePessoa(id: number, pessoa: IPessoa): Observable<IPessoa> {
+    return this.http.put<IPessoa>(`${this.apiUrl}/${id}`, pessoa);
   }
 
   deletePessoa(id: number): Observable<void> {
