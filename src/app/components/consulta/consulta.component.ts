@@ -14,21 +14,8 @@ import { CpfMaskDirective } from '../../directives/cpf-mask.directive';
 
 @Component({
   selector: 'app-consulta',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatDialogModule,
-    MatProgressSpinnerModule,
-    CpfMaskDirective,
-  ],
   templateUrl: './consulta.component.html',
-  styleUrl: './consulta.component.scss',
+  styleUrls: ['./consulta.component.scss'],
 })
 export class ConsultaComponent {
   cpf: string = '';
