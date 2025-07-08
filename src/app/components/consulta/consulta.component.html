@@ -20,6 +20,10 @@
             placeholder="000.000.000-00"
             appCpfMask
             (keyup.enter)="buscarPorCpf()"
+            type="tel"
+            inputmode="numeric"
+            autocomplete="off"
+            aria-label="Campo CPF"
           />
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
@@ -31,9 +35,11 @@
             (click)="buscarPorCpf()"
             [disabled]="carregando"
             class="search-button"
+            type="button"
+            aria-label="Buscar pessoa por CPF"
           >
             <mat-icon>search</mat-icon>
-            Buscar
+            <span class="button-text">Buscar</span>
           </button>
 
           <button
@@ -41,14 +47,21 @@
             (click)="limparBusca()"
             [disabled]="carregando"
             class="clear-button"
+            type="button"
+            aria-label="Limpar busca"
           >
             <mat-icon>clear</mat-icon>
-            Limpar
+            <span class="button-text">Limpar</span>
           </button>
         </div>
 
-        <div *ngIf="carregando" class="loading-container">
-          <mat-spinner diameter="40"></mat-spinner>
+        <div
+          *ngIf="carregando"
+          class="loading-container"
+          role="status"
+          aria-live="polite"
+        >
+          <mat-spinner diameter="40" aria-label="Carregando"></mat-spinner>
           <p>Buscando dados...</p>
         </div>
       </div>
@@ -56,7 +69,12 @@
   </mat-card>
 
   <!-- Resultado da busca -->
-  <mat-card *ngIf="pessoaEncontrada" class="resultado-card">
+  <mat-card
+    *ngIf="pessoaEncontrada"
+    class="resultado-card"
+    role="region"
+    aria-label="Dados da pessoa encontrada"
+  >
     <mat-card-header>
       <mat-card-title>
         <mat-icon>person</mat-icon>
@@ -66,29 +84,29 @@
 
     <mat-card-content>
       <div class="dados-pessoa">
-        <div class="campo">
+        <div class="campo" role="listitem">
           <strong>Nome:</strong>
           <span>{{ pessoaEncontrada.nome }}</span>
         </div>
 
-        <div class="campo">
+        <div class="campo" role="listitem">
           <strong>CPF:</strong>
           <span>{{ formatarCpf(pessoaEncontrada.cpf) }}</span>
         </div>
 
-        <div class="campo">
+        <div class="campo" role="listitem">
           <strong>Sexo:</strong>
           <span>{{
             pessoaEncontrada.sexo === "M" ? "Masculino" : "Feminino"
           }}</span>
         </div>
 
-        <div class="campo">
+        <div class="campo" role="listitem">
           <strong>E-mail:</strong>
           <span>{{ pessoaEncontrada.email }}</span>
         </div>
 
-        <div class="campo">
+        <div class="campo" role="listitem">
           <strong>Telefone:</strong>
           <span>{{ formatarTelefone(pessoaEncontrada.telefone) }}</span>
         </div>
