@@ -18,7 +18,7 @@
             matInput
             [(ngModel)]="cpf"
             placeholder="000.000.000-00"
-            maxlength="14"
+            appCpfMask
             (keyup.enter)="buscarPorCpf()"
           />
           <mat-icon matSuffix>person</mat-icon>

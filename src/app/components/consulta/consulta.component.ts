@@ -10,6 +10,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PessoasService } from '../../services/pessoas.service';
 import { IPessoa } from '../../interfaces/pessoa.interface';
+import { CpfMaskDirective } from '../../directives/cpf-mask.directive';
 
 @Component({
   selector: 'app-consulta',
@@ -24,6 +25,7 @@ import { IPessoa } from '../../interfaces/pessoa.interface';
     MatIconModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    CpfMaskDirective,
   ],
   templateUrl: './consulta.component.html',
   styleUrl: './consulta.component.scss',
@@ -44,7 +46,7 @@ export class ConsultaComponent {
       return;
     }
 
-    // Remove caracteres não numéricos
+    // Remove caracteres não numéricos (pontos e hífen)
     const cpfNumerico = this.cpf.replace(/\D/g, '');
 
     if (cpfNumerico.length !== 11) {
@@ -79,7 +81,7 @@ export class ConsultaComponent {
     this.pessoaEncontrada = null;
   }
 
-  private abrirModalErro(mensagem: string): void {
+  abrirModalErro(mensagem: string): void {
     // Por enquanto, vamos usar um alert simples
     // Depois criaremos o componente de modal
     alert(mensagem);
