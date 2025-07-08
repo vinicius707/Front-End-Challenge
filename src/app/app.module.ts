@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
 import { AppComponent } from './app.component';
+import { ConsultaComponent } from './components/consulta/consulta.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
@@ -12,6 +13,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     BrowserModule,
     HttpClientModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService, { delay: 500 }),
+    ConsultaComponent,
   ],
   bootstrap: [AppComponent],
   providers: [provideAnimationsAsync()],
