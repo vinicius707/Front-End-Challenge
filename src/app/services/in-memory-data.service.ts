@@ -47,6 +47,14 @@ export class InMemoryDataService implements InMemoryDbService {
         email: 'carlos.ferreira@email.com',
         telefone: '11555555555',
       },
+      {
+        id: 6,
+        nome: 'Alex Santos',
+        cpf: '14725836900',
+        sexo: 'O',
+        email: 'alex.santos@email.com',
+        telefone: '11444447777',
+      },
     ];
     return { pessoas };
   }

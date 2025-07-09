@@ -18,6 +18,7 @@ export class CadastroComponent implements OnInit {
   sexos = [
     { valor: 'M', label: 'Masculino' },
     { valor: 'F', label: 'Feminino' },
+    { valor: 'O', label: 'Outro' },
   ];
 
   constructor(

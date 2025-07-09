@@ -65,7 +65,7 @@ describe('InMemoryDataService', () => {
       const pessoas = db.pessoas;
 
       pessoas.forEach((pessoa) => {
-        expect(['M', 'F']).toContain(pessoa.sexo);
+        expect(['M', 'F', 'O']).toContain(pessoa.sexo);
       });
     });
 

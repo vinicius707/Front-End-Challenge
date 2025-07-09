@@ -88,6 +88,7 @@ describe('CadastroComponent', () => {
     expect(component.sexos).toEqual([
       { valor: 'M', label: 'Masculino' },
       { valor: 'F', label: 'Feminino' },
+      { valor: 'O', label: 'Outro' },
     ]);
   });
 
@@ -163,9 +164,21 @@ describe('CadastroComponent', () => {
       expect(sexoControl?.hasError('required')).toBeTruthy();
     });
 
-    it('deve aceitar valor válido', () => {
+    it('deve aceitar valor Masculino', () => {
       const sexoControl = component.cadastroForm.get('sexo');
       sexoControl?.setValue('M');
+      expect(sexoControl?.valid).toBeTruthy();
+    });
+
+    it('deve aceitar valor Feminino', () => {
+      const sexoControl = component.cadastroForm.get('sexo');
+      sexoControl?.setValue('F');
+      expect(sexoControl?.valid).toBeTruthy();
+    });
+
+    it('deve aceitar valor Outro', () => {
+      const sexoControl = component.cadastroForm.get('sexo');
+      sexoControl?.setValue('O');
       expect(sexoControl?.valid).toBeTruthy();
     });
   });
