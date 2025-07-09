@@ -1,34 +1,58 @@
-<div class="pagina-inicial-container">
+<div
+  class="pagina-inicial-container"
+  role="main"
+  aria-label="Página inicial do sistema"
+>
   <div class="bem-vindo">
-    <h2>Bem-vindo ao Sistema de Cadastro e Consulta de Pessoas</h2>
-    <p>Escolha uma das opções abaixo para começar:</p>
+    <h1 class="titulo-principal">
+      Bem-vindo ao Sistema de Cadastro e Consulta de Pessoas
+    </h1>
+    <p class="subtitulo">Escolha uma das opções abaixo para começar:</p>
   </div>
-  <div class="cards-wrapper">
-    <mat-card class="card-acesso">
+  <div class="cards-wrapper" role="region" aria-label="Opções de navegação">
+    <mat-card class="card-acesso" role="button" tabindex="0">
       <mat-card-header>
-        <mat-card-title>Cadastro de Pessoa</mat-card-title>
+        <mat-card-title>
+          <mat-icon aria-hidden="true">person_add</mat-icon>
+          Cadastro de Pessoa
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <p>Cadastre uma nova pessoa no sistema.</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="primary" routerLink="/cadastro">
-          <mat-icon>person_add</mat-icon>
-          Ir para Cadastro
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/cadastro"
+          aria-label="Ir para página de cadastro de pessoa"
+          class="botao-acesso"
+        >
+          <mat-icon aria-hidden="true">person_add</mat-icon>
+          <span class="texto-botao">Ir para Cadastro</span>
         </button>
       </mat-card-actions>
     </mat-card>
-    <mat-card class="card-acesso">
+    <mat-card class="card-acesso" role="button" tabindex="0">
       <mat-card-header>
-        <mat-card-title>Consulta de Pessoa</mat-card-title>
+        <mat-card-title>
+          <mat-icon aria-hidden="true">search</mat-icon>
+          Consulta de Pessoa
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <p>Consulte os dados de uma pessoa pelo CPF.</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="accent" routerLink="/consulta">
-          <mat-icon>search</mat-icon>
-          Ir para Consulta
+        <button
+          mat-raised-button
+          color="accent"
+          routerLink="/consulta"
+          aria-label="Ir para página de consulta de pessoa"
+          class="botao-acesso"
+        >
+          <mat-icon aria-hidden="true">search</mat-icon>
+          <span class="texto-botao">Ir para Consulta</span>
         </button>
       </mat-card-actions>
     </mat-card>
