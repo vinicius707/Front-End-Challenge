@@ -1,14 +1,36 @@
 <div class="pagina-inicial-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title
-        >Bem-vindo ao Sistema de Cadastro e Consulta de Pessoas</mat-card-title
-      >
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Utilize o menu para acessar as funcionalidades de cadastro ou consulta.
-      </p>
-    </mat-card-content>
-  </mat-card>
+  <div class="bem-vindo">
+    <h2>Bem-vindo ao Sistema de Cadastro e Consulta de Pessoas</h2>
+    <p>Escolha uma das opções abaixo para começar:</p>
+  </div>
+  <div class="cards-wrapper">
+    <mat-card class="card-acesso">
+      <mat-card-header>
+        <mat-card-title>Cadastro de Pessoa</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Cadastre uma nova pessoa no sistema.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" routerLink="/cadastro">
+          <mat-icon>person_add</mat-icon>
+          Ir para Cadastro
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card class="card-acesso">
+      <mat-card-header>
+        <mat-card-title>Consulta de Pessoa</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Consulte os dados de uma pessoa pelo CPF.</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent" routerLink="/consulta">
+          <mat-icon>search</mat-icon>
+          Ir para Consulta
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
