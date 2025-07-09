@@ -1,0 +1,147 @@
+<div class="container">
+  <mat-card class="cadastro-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>person_add</mat-icon>
+        Cadastro de Pessoa
+      </mat-card-title>
+      <mat-card-subtitle>
+        Preencha os dados para cadastrar uma nova pessoa
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form
+        [formGroup]="cadastroForm"
+        (ngSubmit)="onSubmit()"
+        class="form-container"
+      >
+        <!-- Campo Nome -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Nome Completo</mat-label>
+          <input
+            matInput
+            formControlName="nome"
+            placeholder="Digite o nome completo"
+            maxlength="100"
+            type="text"
+            autocomplete="name"
+            aria-label="Campo nome"
+          />
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="getMensagemErro('nome')">
+            {{ getMensagemErro("nome") }}
+          </mat-error>
+          <mat-hint
+            >{{ cadastroForm.get("nome")?.value?.length || 0 }}/100</mat-hint
+          >
+        </mat-form-field>
+
+        <!-- Campo CPF -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>CPF</mat-label>
+          <input
+            matInput
+            formControlName="cpf"
+            placeholder="000.000.000-00"
+            maxlength="14"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            appCpfMask
+            aria-label="Campo CPF"
+          />
+          <mat-icon matSuffix>badge</mat-icon>
+          <mat-error *ngIf="getMensagemErro('cpf')">
+            {{ getMensagemErro("cpf") }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Campo Sexo -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Sexo</mat-label>
+          <mat-select formControlName="sexo" aria-label="Campo sexo">
+            <mat-option *ngFor="let sexo of sexos" [value]="sexo.valor">
+              {{ sexo.label }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>wc</mat-icon>
+          <mat-error *ngIf="getMensagemErro('sexo')">
+            {{ getMensagemErro("sexo") }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Campo E-mail -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>E-mail</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            placeholder="exemplo@email.com"
+            maxlength="100"
+            type="email"
+            autocomplete="email"
+            aria-label="Campo e-mail"
+          />
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="getMensagemErro('email')">
+            {{ getMensagemErro("email") }}
+          </mat-error>
+          <mat-hint
+            >{{ cadastroForm.get("email")?.value?.length || 0 }}/100</mat-hint
+          >
+        </mat-form-field>
+
+        <!-- Campo Telefone -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Telefone</mat-label>
+          <input
+            matInput
+            formControlName="telefone"
+            placeholder="(00) 00000-0000"
+            maxlength="15"
+            type="tel"
+            inputmode="numeric"
+            autocomplete="tel"
+            (input)="formatarTelefone($event)"
+            aria-label="Campo telefone"
+          />
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-error *ngIf="getMensagemErro('telefone')">
+            {{ getMensagemErro("telefone") }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Botões -->
+        <div class="button-container">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="carregando || cadastroForm.invalid"
+            class="submit-button"
+            aria-label="Cadastrar pessoa"
+          >
+            <mat-icon *ngIf="!carregando">save</mat-icon>
+            <mat-spinner *ngIf="carregando" diameter="20"></mat-spinner>
+            <span class="button-text">
+              {{ carregando ? "Cadastrando..." : "Cadastrar" }}
+            </span>
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="limparFormulario()"
+            [disabled]="carregando"
+            class="clear-button"
+            aria-label="Limpar formulário"
+          >
+            <mat-icon>clear</mat-icon>
+            <span class="button-text">Limpar</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

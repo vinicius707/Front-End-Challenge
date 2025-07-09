@@ -1,34 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
 import { PessoasService } from '../../services/pessoas.service';
 import { IPessoa } from '../../interfaces/pessoa.interface';
 import { CpfMaskDirective } from '../../directives/cpf-mask.directive';
 
 @Component({
   selector: 'app-consulta',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatDialogModule,
-    MatProgressSpinnerModule,
-    CpfMaskDirective,
-  ],
   templateUrl: './consulta.component.html',
-  styleUrl: './consulta.component.scss',
+  styleUrls: ['./consulta.component.scss'],
 })
 export class ConsultaComponent {
   cpf: string = '';
