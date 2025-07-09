@@ -19,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CpfMaskDirective } from './directives/cpf-mask.directive';
+import { PaginaInicialComponent } from './components/pagina-inicial/pagina-inicial.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CpfMaskDirective } from './directives/cpf-mask.directive';
     ConsultaComponent,
     CadastroComponent,
     CpfMaskDirective,
+    PaginaInicialComponent,
   ],
   imports: [
     BrowserModule,
