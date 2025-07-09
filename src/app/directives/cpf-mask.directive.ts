@@ -30,7 +30,12 @@ export class CpfMaskDirective {
 
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    // Permite apenas números, backspace, delete, tab, escape, enter
+    // Permite teclas de atalho (Ctrl, Cmd, etc.)
+    if (event.ctrlKey || event.metaKey) {
+      return; // Permite todas as combinações com Ctrl/Cmd
+    }
+
+    // Permite apenas números, backspace, delete, tab, escape, enter e setas
     const allowedKeys = [
       'Backspace',
       'Delete',
@@ -41,6 +46,8 @@ export class CpfMaskDirective {
       'ArrowRight',
       'ArrowUp',
       'ArrowDown',
+      'Home',
+      'End',
     ];
 
     const isNumber = /[0-9]/.test(event.key);
@@ -54,17 +61,71 @@ export class CpfMaskDirective {
   @HostListener('paste', ['$event'])
   onPaste(event: ClipboardEvent) {
     event.preventDefault();
-    const pastedText = event.clipboardData?.getData('text/plain') || '';
-    const numericValue = pastedText.replace(/\D/g, '').substring(0, 11);
 
-    if (numericValue.length > 0) {
-      const formattedValue = numericValue.replace(
-        /(\d{3})(\d{3})(\d{3})(\d{2})/,
-        '$1.$2.$3-$4'
-      );
+    const pastedText = event.clipboardData?.getData('text/plain') || '';
+
+    // Remove caracteres não numéricos
+    const numericValue = pastedText.replace(/\D/g, '');
+
+    // Limita a 11 dígitos
+    const limitedValue = numericValue.substring(0, 11);
+
+    if (limitedValue.length > 0) {
+      let formattedValue = limitedValue;
+
+      // Aplica a máscara apenas se tiver 11 dígitos
+      if (limitedValue.length === 11) {
+        formattedValue = limitedValue.replace(
+          /(\d{3})(\d{3})(\d{3})(\d{2})/,
+          '$1.$2.$3-$4'
+        );
+      } else if (limitedValue.length >= 9) {
+        // Aplica máscara parcial para 9 ou 10 dígitos
+        formattedValue = limitedValue.replace(
+          /(\d{3})(\d{3})(\d{3})/,
+          '$1.$2.$3'
+        );
+      } else if (limitedValue.length >= 6) {
+        // Aplica máscara parcial para 6 ou mais dígitos
+        formattedValue = limitedValue.replace(/(\d{3})(\d{3})/, '$1.$2');
+      } else if (limitedValue.length >= 3) {
+        // Aplica máscara parcial para 3 ou mais dígitos
+        formattedValue = limitedValue.replace(/(\d{3})/, '$1.');
+      }
+
       const input = event.target as HTMLInputElement;
       input.value = formattedValue;
-      input.dispatchEvent(new Event('input'));
+
+      // Dispara eventos para atualizar o ngModel
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  @HostListener('drop', ['$event'])
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+
+    const droppedText = event.dataTransfer?.getData('text/plain') || '';
+
+    // Remove caracteres não numéricos
+    const numericValue = droppedText.replace(/\D/g, '');
+    const limitedValue = numericValue.substring(0, 11);
+
+    if (limitedValue.length > 0) {
+      let formattedValue = limitedValue;
+
+      if (limitedValue.length === 11) {
+        formattedValue = limitedValue.replace(
+          /(\d{3})(\d{3})(\d{3})(\d{2})/,
+          '$1.$2.$3-$4'
+        );
+      }
+
+      const input = event.target as HTMLInputElement;
+      input.value = formattedValue;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }
 }
