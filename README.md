@@ -2,6 +2,12 @@
 
 Um sistema completo de cadastro e consulta de pessoas desenvolvido em Angular 17, com validações robustas, interface moderna e testes abrangentes.
 
+## 🌐 Preview da Aplicação
+
+**Acesse a aplicação em produção:** [https://front-end-challenge-rosy.vercel.app/](https://front-end-challenge-rosy.vercel.app/)
+
+---
+
 ## Sobre o Projeto
 
 Este projeto implementa um sistema completo de gerenciamento de pessoas com as seguintes características:
