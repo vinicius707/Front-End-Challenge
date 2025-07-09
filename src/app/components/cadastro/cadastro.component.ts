@@ -64,7 +64,31 @@ export class CadastroComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
+    const cpfControl = this.cadastroForm.get('cpf');
+    if (!cpfControl) return;
+
+    // Aguarda validação assíncrona do CPF
+    if (cpfControl.pending) {
+      cpfControl.markAsTouched();
+      this.snackBar.open('Aguarde a validação do CPF.', 'Fechar', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    if (cpfControl.hasError('cpfAlreadyExists')) {
+      cpfControl.markAsTouched();
+      this.snackBar.open('CPF já cadastrado no sistema', 'Fechar', {
+        duration: 4000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
     if (this.cadastroForm.valid) {
       this.carregando = true;
 
