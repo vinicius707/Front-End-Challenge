@@ -269,18 +269,10 @@ front-end-challenge/
 - **Serviços**: 2 (Pessoas, In-Memory Data)
 - **Diretivas**: 1 (Máscara CPF)
 
-## 🤝 Contribuindo
+## Contato
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+Em caso de dúvidas, entre em contato:
 
-## 📝 Licença
+Email: viniciussilva707@gmail.com
 
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
-
-## 📞 Suporte
-
-Se você encontrar algum problema ou tiver dúvidas, abra uma issue no repositório do projeto.
+GitHub: https://github.com/vinicius707
