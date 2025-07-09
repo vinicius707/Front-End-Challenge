@@ -4,11 +4,6 @@
   "framework": "angular",
   "installCommand": "npm install",
   "devCommand": "npm start",
-  "functions": {
-    "src/app/**/*.ts": {
-      "maxDuration": 10
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
