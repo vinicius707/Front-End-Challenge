@@ -128,7 +128,11 @@
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="carregando || cadastroForm.invalid"
+            [disabled]="
+              carregando ||
+              cadastroForm.invalid ||
+              cadastroForm.get('cpf')?.pending
+            "
             class="submit-button"
             aria-label="Cadastrar pessoa"
           >

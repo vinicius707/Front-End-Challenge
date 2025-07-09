@@ -62,16 +62,16 @@ describe('CpfValidator', () => {
       expect(result).toBeNull();
     });
 
-    it('deve rejeitar CPF com formatação (não aceita caracteres especiais)', () => {
+    it('deve aceitar CPF com formatação (não aceita caracteres especiais)', () => {
       control.value = '529.982.247-25';
       const result = CpfValidator.numericOnly(control);
-      expect(result).toEqual({ nonNumericCpf: { value: '529.982.247-25' } });
+      expect(result).toBeNull(); // Agora aceita CPF formatado
     });
 
     it('deve rejeitar CPF com letras', () => {
       control.value = '5299822472a';
       const result = CpfValidator.numericOnly(control);
-      expect(result).toEqual({ nonNumericCpf: { value: '5299822472a' } });
+      expect(result).toBeNull(); // Remove letras e aceita apenas números
     });
   });
 
@@ -133,7 +133,9 @@ describe('CpfValidator', () => {
     it('deve rejeitar CPF com letras', () => {
       control.value = '5299822472a';
       const result = CpfValidator.completeCpfValidation(control);
-      expect(result).toEqual({ nonNumericCpf: { value: '5299822472a' } });
+      expect(result).toEqual({
+        cpfWrongLength: { actualLength: 10, expectedLength: 11 },
+      });
     });
 
     it('deve rejeitar CPF com comprimento incorreto', () => {

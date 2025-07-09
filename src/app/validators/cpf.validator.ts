@@ -1,4 +1,11 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  ValidationErrors,
+  AsyncValidatorFn,
+} from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { PessoasService } from '../services/pessoas.service';
 
 export class CpfValidator {
   /**
@@ -59,10 +66,13 @@ export class CpfValidator {
       return null;
     }
 
+    // Remove caracteres não numéricos antes de validar
+    const cpfLimpo = control.value.replace(/\D/g, '');
+
     // Regex para verificar se contém apenas números
     const numericRegex = /^\d+$/;
 
-    if (!numericRegex.test(control.value)) {
+    if (!numericRegex.test(cpfLimpo)) {
       return { nonNumericCpf: { value: control.value } };
     }
 
@@ -98,17 +108,97 @@ export class CpfValidator {
       return null;
     }
 
-    // Aplica todas as validações em sequência
-    const numericError = CpfValidator.numericOnly(control);
-    if (numericError) return numericError;
+    // Remove caracteres não numéricos para validação
+    const cpfLimpo = control.value.replace(/\D/g, '');
 
-    const lengthError = CpfValidator.exactLength(control);
-    if (lengthError) return lengthError;
+    // Verifica se tem exatamente 11 dígitos
+    if (cpfLimpo.length !== 11) {
+      return {
+        cpfWrongLength: { actualLength: cpfLimpo.length, expectedLength: 11 },
+      };
+    }
 
-    const formatError = CpfValidator.validCpf(control);
-    if (formatError) return formatError;
+    // Verifica se todos os dígitos são iguais
+    if (/^(\d)\1{10}$/.test(cpfLimpo)) {
+      return { cpfAllSameDigits: { value: control.value } };
+    }
+
+    // Validação do primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+      soma += parseInt(cpfLimpo.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    const digito1 = resto < 2 ? 0 : resto;
+
+    // Validação do segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+      soma += parseInt(cpfLimpo.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    const digito2 = resto < 2 ? 0 : resto;
+
+    // Verifica se os dígitos verificadores estão corretos
+    if (
+      parseInt(cpfLimpo.charAt(9)) !== digito1 ||
+      parseInt(cpfLimpo.charAt(10)) !== digito2
+    ) {
+      return { invalidCpfDigits: { value: control.value } };
+    }
 
     return null;
+  }
+
+  /**
+   * Validador simplificado para CPF: aceita apenas 11 dígitos e rejeita todos iguais
+   */
+  static simpleCpfValidation(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+
+    // Remove caracteres não numéricos
+    const cpf = control.value.replace(/\D/g, '');
+
+    // Verifica se tem exatamente 11 dígitos
+    if (cpf.length !== 11) {
+      return {
+        cpfWrongLength: { actualLength: cpf.length, expectedLength: 11 },
+      };
+    }
+
+    // Verifica se todos os dígitos são iguais
+    if (/^(\d)\1{10}$/.test(cpf)) {
+      return { cpfAllSameDigits: { value: control.value } };
+    }
+
+    return null;
+  }
+
+  /**
+   * Validador assíncrono para verificar se o CPF já existe
+   */
+  static cpfExistsValidator(pessoasService: PessoasService): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+
+      const cpf = control.value.replace(/\D/g, '');
+
+      return pessoasService.getPessoas().pipe(
+        map((pessoas) => {
+          const cpfExists = pessoas.some((pessoa) => pessoa.cpf === cpf);
+          return cpfExists
+            ? { cpfAlreadyExists: { value: control.value } }
+            : null;
+        }),
+        catchError(() => of(null)) // Em caso de erro, não bloqueia o formulário
+      );
+    };
   }
 }
 

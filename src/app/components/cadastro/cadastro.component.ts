@@ -42,7 +42,11 @@ export class CadastroComponent implements OnInit {
           Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/),
         ],
       ],
-      cpf: ['', [Validators.required, cpfValidator.completeCpfValidation]],
+      cpf: [
+        '',
+        [Validators.required, cpfValidator.simpleCpfValidation],
+        [cpfValidator.cpfExistsValidator(this.pessoasService)],
+      ],
       sexo: ['', Validators.required],
       email: [
         '',
@@ -60,13 +64,37 @@ export class CadastroComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
+    const cpfControl = this.cadastroForm.get('cpf');
+    if (!cpfControl) return;
+
+    // Aguarda validação assíncrona do CPF
+    if (cpfControl.pending) {
+      cpfControl.markAsTouched();
+      this.snackBar.open('Aguarde a validação do CPF.', 'Fechar', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    if (cpfControl.hasError('cpfAlreadyExists')) {
+      cpfControl.markAsTouched();
+      this.snackBar.open('CPF já cadastrado no sistema', 'Fechar', {
+        duration: 4000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
     if (this.cadastroForm.valid) {
       this.carregando = true;
 
       const dadosPessoa: Omit<IPessoa, 'id'> = {
         nome: this.cadastroForm.value.nome.trim(),
-        cpf: this.cadastroForm.value.cpf,
+        cpf: this.cadastroForm.value.cpf.replace(/\D/g, ''), // Remove formatação
         sexo: this.cadastroForm.value.sexo,
         email: this.cadastroForm.value.email.trim().toLowerCase(),
         telefone: this.cadastroForm.value.telefone,
@@ -169,6 +197,10 @@ export class CadastroComponent implements OnInit {
 
     if (control?.hasError('cpfWrongLength') && control?.touched) {
       return 'CPF deve ter exatamente 11 dígitos';
+    }
+
+    if (control?.hasError('cpfAlreadyExists') && control?.touched) {
+      return 'CPF já cadastrado no sistema';
     }
 
     // Validações customizadas de Email

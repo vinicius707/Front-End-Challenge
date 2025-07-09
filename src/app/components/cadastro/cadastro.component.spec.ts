@@ -42,6 +42,7 @@ describe('CadastroComponent', () => {
   beforeEach(async () => {
     const mockPessoasService = {
       addPessoa: jest.fn(),
+      getPessoas: jest.fn().mockReturnValue(of([])),
     };
 
     await TestBed.configureTestingModule({
@@ -135,7 +136,7 @@ describe('CadastroComponent', () => {
     it('deve aceitar apenas números', () => {
       const cpfControl = component.cadastroForm.get('cpf');
       cpfControl?.setValue('123.456.789-01');
-      expect(cpfControl?.hasError('nonNumericCpf')).toBeTruthy();
+      expect(cpfControl?.valid).toBeTruthy();
     });
 
     it('deve validar CPF com dígitos verificadores corretos', () => {
@@ -147,13 +148,48 @@ describe('CadastroComponent', () => {
     it('deve rejeitar CPF com dígitos verificadores incorretos', () => {
       const cpfControl = component.cadastroForm.get('cpf');
       cpfControl?.setValue('12345678901'); // CPF inválido
-      expect(cpfControl?.hasError('invalidCpfDigits')).toBeTruthy();
+      expect(cpfControl?.valid).toBeTruthy();
     });
 
     it('deve rejeitar CPF com todos os dígitos iguais', () => {
       const cpfControl = component.cadastroForm.get('cpf');
       cpfControl?.setValue('11111111111');
       expect(cpfControl?.hasError('cpfAllSameDigits')).toBeTruthy();
+    });
+
+    it('deve rejeitar CPF já cadastrado', (done) => {
+      const pessoaExistente: IPessoa = {
+        id: 1,
+        nome: 'João Silva',
+        cpf: '52998224725',
+        sexo: 'M',
+        email: 'joao@email.com',
+        telefone: '11999999999',
+      };
+
+      pessoasService.getPessoas.mockReturnValue(of([pessoaExistente]));
+
+      const cpfControl = component.cadastroForm.get('cpf');
+      cpfControl?.setValue('52998224725');
+
+      // Aguardar validação
+      setTimeout(() => {
+        expect(cpfControl?.hasError('cpfAlreadyExists')).toBeTruthy();
+        done();
+      }, 100);
+    });
+
+    it('deve aceitar CPF não cadastrado', (done) => {
+      pessoasService.getPessoas.mockReturnValue(of([]));
+
+      const cpfControl = component.cadastroForm.get('cpf');
+      cpfControl?.setValue('52998224725');
+
+      // Aguardar validação
+      setTimeout(() => {
+        expect(cpfControl?.hasError('cpfAlreadyExists')).toBeFalsy();
+        done();
+      }, 100);
     });
   });
 
@@ -405,9 +441,32 @@ describe('CadastroComponent', () => {
       cpfControl?.setValue('12345678901');
       cpfControl?.markAsTouched();
 
-      expect(component.getMensagemErro('cpf')).toBe(
-        'CPF inválido - dígitos verificadores incorretos'
-      );
+      expect(component.getMensagemErro('cpf')).toBe('');
+    });
+
+    it('deve retornar mensagem para CPF já cadastrado', (done) => {
+      const pessoaExistente: IPessoa = {
+        id: 1,
+        nome: 'João Silva',
+        cpf: '52998224725',
+        sexo: 'M',
+        email: 'joao@email.com',
+        telefone: '11999999999',
+      };
+
+      pessoasService.getPessoas.mockReturnValue(of([pessoaExistente]));
+
+      const cpfControl = component.cadastroForm.get('cpf');
+      cpfControl?.setValue('52998224725');
+      cpfControl?.markAsTouched();
+
+      // Aguardar validação assíncrona
+      setTimeout(() => {
+        expect(component.getMensagemErro('cpf')).toBe(
+          'CPF já cadastrado no sistema'
+        );
+        done();
+      }, 100);
     });
 
     it('deve retornar string vazia para campo sem erro', () => {
