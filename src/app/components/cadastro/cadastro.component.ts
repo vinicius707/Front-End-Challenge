@@ -16,6 +16,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PessoasService } from '../../services/pessoas.service';
 import { IPessoa } from '../../interfaces/pessoa.interface';
+import { emailValidator } from '../../validators/email.validator';
+import { cpfValidator } from '../../validators/cpf.validator';
+import { telefoneValidator } from '../../validators/telefone.validator';
 
 @Component({
   selector: 'app-cadastro',
@@ -51,73 +54,22 @@ export class CadastroComponent implements OnInit {
           Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/),
         ],
       ],
-      cpf: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^\d{11}$/),
-          this.validarCpf.bind(this),
-        ],
-      ],
+      cpf: ['', [Validators.required, cpfValidator.completeCpfValidation]],
       sexo: ['', Validators.required],
       email: [
         '',
-        [Validators.required, Validators.email, Validators.maxLength(100)],
+        [
+          Validators.required,
+          emailValidator.validEmail,
+          emailValidator.noSpecialChars,
+          emailValidator.maxLength,
+        ],
       ],
       telefone: [
         '',
-        [
-          Validators.required,
-          Validators.pattern(/^\d{10,11}$/),
-          Validators.minLength(10),
-          Validators.maxLength(11),
-        ],
+        [Validators.required, telefoneValidator.completeTelefoneValidation],
       ],
     });
-  }
-
-  validarCpf(control: any): { [key: string]: any } | null {
-    const cpf = control.value;
-    if (!cpf) return null;
-
-    // Remove caracteres não numéricos
-    const cpfLimpo = cpf.replace(/\D/g, '');
-
-    // Verifica se tem 11 dígitos
-    if (cpfLimpo.length !== 11) {
-      return { cpfInvalido: true };
-    }
-
-    // Verifica se todos os dígitos são iguais
-    if (/^(\d)\1{10}$/.test(cpfLimpo)) {
-      return { cpfInvalido: true };
-    }
-
-    // Validação do primeiro dígito verificador
-    let soma = 0;
-    for (let i = 0; i < 9; i++) {
-      soma += parseInt(cpfLimpo.charAt(i)) * (10 - i);
-    }
-    let resto = 11 - (soma % 11);
-    const digito1 = resto < 2 ? 0 : resto;
-
-    // Validação do segundo dígito verificador
-    soma = 0;
-    for (let i = 0; i < 10; i++) {
-      soma += parseInt(cpfLimpo.charAt(i)) * (11 - i);
-    }
-    resto = 11 - (soma % 11);
-    const digito2 = resto < 2 ? 0 : resto;
-
-    // Verifica se os dígitos verificadores estão corretos
-    if (
-      parseInt(cpfLimpo.charAt(9)) !== digito1 ||
-      parseInt(cpfLimpo.charAt(10)) !== digito2
-    ) {
-      return { cpfInvalido: true };
-    }
-
-    return null;
   }
 
   onSubmit(): void {
@@ -205,17 +157,64 @@ export class CadastroComponent implements OnInit {
       switch (campo) {
         case 'nome':
           return 'Nome deve conter apenas letras e espaços';
-        case 'cpf':
-          return 'CPF deve conter apenas números';
-        case 'telefone':
-          return 'Telefone deve conter apenas números';
         default:
           return 'Formato inválido';
       }
     }
 
-    if (control?.hasError('cpfInvalido') && control?.touched) {
-      return 'CPF inválido';
+    // Validações customizadas de CPF
+    if (control?.hasError('invalidCpfFormat') && control?.touched) {
+      return 'CPF deve conter exatamente 11 dígitos';
+    }
+
+    if (control?.hasError('cpfAllSameDigits') && control?.touched) {
+      return 'CPF não pode ter todos os dígitos iguais';
+    }
+
+    if (control?.hasError('invalidCpfDigits') && control?.touched) {
+      return 'CPF inválido - dígitos verificadores incorretos';
+    }
+
+    if (control?.hasError('nonNumericCpf') && control?.touched) {
+      return 'CPF deve conter apenas números';
+    }
+
+    if (control?.hasError('cpfWrongLength') && control?.touched) {
+      return 'CPF deve ter exatamente 11 dígitos';
+    }
+
+    // Validações customizadas de Email
+    if (control?.hasError('invalidEmail') && control?.touched) {
+      return 'Formato de e-mail inválido';
+    }
+
+    if (control?.hasError('forbiddenChars') && control?.touched) {
+      return 'E-mail contém caracteres especiais não permitidos';
+    }
+
+    if (control?.hasError('emailTooLong') && control?.touched) {
+      return 'E-mail muito longo';
+    }
+
+    // Validações customizadas de Telefone
+    if (control?.hasError('invalidTelefoneFormat') && control?.touched) {
+      return 'Telefone deve ter 10 ou 11 dígitos';
+    }
+
+    if (control?.hasError('nonNumericTelefone') && control?.touched) {
+      return 'Telefone deve conter apenas números';
+    }
+
+    if (control?.hasError('telefoneWrongLength') && control?.touched) {
+      return 'Telefone deve ter entre 10 e 11 dígitos';
+    }
+
+    if (control?.hasError('invalidDDD') && control?.touched) {
+      return 'DDD inválido';
+    }
+
+    if (control?.hasError('telefoneLeadingZero') && control?.touched) {
+      return 'Telefone não pode começar com zero';
     }
 
     return '';

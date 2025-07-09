@@ -134,7 +134,7 @@ describe('CadastroComponent', () => {
     it('deve aceitar apenas números', () => {
       const cpfControl = component.cadastroForm.get('cpf');
       cpfControl?.setValue('123.456.789-01');
-      expect(cpfControl?.hasError('pattern')).toBeTruthy();
+      expect(cpfControl?.hasError('nonNumericCpf')).toBeTruthy();
     });
 
     it('deve validar CPF com dígitos verificadores corretos', () => {
@@ -146,13 +146,13 @@ describe('CadastroComponent', () => {
     it('deve rejeitar CPF com dígitos verificadores incorretos', () => {
       const cpfControl = component.cadastroForm.get('cpf');
       cpfControl?.setValue('12345678901'); // CPF inválido
-      expect(cpfControl?.hasError('cpfInvalido')).toBeTruthy();
+      expect(cpfControl?.hasError('invalidCpfDigits')).toBeTruthy();
     });
 
     it('deve rejeitar CPF com todos os dígitos iguais', () => {
       const cpfControl = component.cadastroForm.get('cpf');
       cpfControl?.setValue('11111111111');
-      expect(cpfControl?.hasError('cpfInvalido')).toBeTruthy();
+      expect(cpfControl?.hasError('cpfAllSameDigits')).toBeTruthy();
     });
   });
 
@@ -180,7 +180,7 @@ describe('CadastroComponent', () => {
     it('deve validar formato de e-mail', () => {
       const emailControl = component.cadastroForm.get('email');
       emailControl?.setValue('email-invalido');
-      expect(emailControl?.hasError('email')).toBeTruthy();
+      expect(emailControl?.hasError('invalidEmail')).toBeTruthy();
     });
 
     it('deve aceitar e-mail válido', () => {
@@ -207,19 +207,19 @@ describe('CadastroComponent', () => {
     it('deve aceitar apenas números', () => {
       const telefoneControl = component.cadastroForm.get('telefone');
       telefoneControl?.setValue('(11) 99999-9999');
-      expect(telefoneControl?.hasError('pattern')).toBeTruthy();
+      expect(telefoneControl?.hasError('nonNumericTelefone')).toBeTruthy();
     });
 
     it('deve ter mínimo de 10 dígitos', () => {
       const telefoneControl = component.cadastroForm.get('telefone');
       telefoneControl?.setValue('119999999');
-      expect(telefoneControl?.hasError('minlength')).toBeTruthy();
+      expect(telefoneControl?.hasError('telefoneWrongLength')).toBeTruthy();
     });
 
     it('deve ter máximo de 11 dígitos', () => {
       const telefoneControl = component.cadastroForm.get('telefone');
       telefoneControl?.setValue('119999999999');
-      expect(telefoneControl?.hasError('maxlength')).toBeTruthy();
+      expect(telefoneControl?.hasError('telefoneWrongLength')).toBeTruthy();
     });
 
     it('deve aceitar telefone com 10 dígitos', () => {
@@ -382,7 +382,9 @@ describe('CadastroComponent', () => {
       emailControl?.setValue('email-invalido');
       emailControl?.markAsTouched();
 
-      expect(component.getMensagemErro('email')).toBe('E-mail inválido');
+      expect(component.getMensagemErro('email')).toBe(
+        'Formato de e-mail inválido'
+      );
     });
 
     it('deve retornar mensagem para CPF inválido', () => {
@@ -390,7 +392,9 @@ describe('CadastroComponent', () => {
       cpfControl?.setValue('12345678901');
       cpfControl?.markAsTouched();
 
-      expect(component.getMensagemErro('cpf')).toBe('CPF inválido');
+      expect(component.getMensagemErro('cpf')).toBe(
+        'CPF inválido - dígitos verificadores incorretos'
+      );
     });
 
     it('deve retornar string vazia para campo sem erro', () => {
