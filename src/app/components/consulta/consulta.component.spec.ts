@@ -309,9 +309,13 @@ describe('ConsultaComponent', () => {
 
       const compiled = fixture.nativeElement;
       const buttons = compiled.querySelectorAll('button');
-      buttons.forEach((button: HTMLButtonElement) => {
-        expect(button.disabled).toBeTruthy();
-      });
+
+      // Verifica apenas os botões que devem ser desabilitados (excluindo o botão de voltar)
+      const searchButton = compiled.querySelector('.search-button');
+      const clearButton = compiled.querySelector('.clear-button');
+
+      expect(searchButton.disabled).toBeTruthy();
+      expect(clearButton.disabled).toBeTruthy();
     });
   });
 });
