@@ -42,7 +42,7 @@ export class CadastroComponent implements OnInit {
           Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/),
         ],
       ],
-      cpf: ['', [Validators.required, cpfValidator.completeCpfValidation]],
+      cpf: ['', [Validators.required, cpfValidator.simpleCpfValidation]],
       sexo: ['', Validators.required],
       email: [
         '',
@@ -66,7 +66,7 @@ export class CadastroComponent implements OnInit {
 
       const dadosPessoa: Omit<IPessoa, 'id'> = {
         nome: this.cadastroForm.value.nome.trim(),
-        cpf: this.cadastroForm.value.cpf,
+        cpf: this.cadastroForm.value.cpf.replace(/\D/g, ''), // Remove formatação
         sexo: this.cadastroForm.value.sexo,
         email: this.cadastroForm.value.email.trim().toLowerCase(),
         telefone: this.cadastroForm.value.telefone,
