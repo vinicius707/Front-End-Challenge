@@ -6,13 +6,22 @@ Um sistema completo de cadastro e consulta de pessoas desenvolvido em Angular 17
 
 Este projeto implementa um sistema completo de gerenciamento de pessoas com as seguintes características:
 
+- **Página Inicial**: Interface de boas-vindas com navegação intuitiva
 - **Cadastro de Pessoas**: Formulário com validações em tempo real
 - **Consulta por CPF**: Busca e exibição de dados cadastrados
 - **Validações Customizadas**: CPF, email e telefone com regras específicas
 - **Interface Responsiva**: Design moderno com Angular Material
-- **Testes Abrangentes**: Cobertura completa com Jest
+- **Testes Abrangentes**: Cobertura completa com Jest (185 cenários de teste)
 
 ## ✨ Funcionalidades
+
+### 🏠 Página Inicial
+
+- **Interface de Boas-vindas**: Mensagem de apresentação do sistema
+- **Navegação Intuitiva**: Cards interativos para acessar funcionalidades
+- **Design Responsivo**: Adaptação perfeita para todos os dispositivos
+- **Acessibilidade**: Suporte completo a navegação por teclado e leitores de tela
+- **Animações Suaves**: Transições elegantes e feedback visual
 
 ### 📝 Cadastro de Pessoas
 
@@ -21,12 +30,16 @@ Este projeto implementa um sistema completo de gerenciamento de pessoas com as s
 - **Sexo**: Seleção obrigatória (Masculino, Feminino, Outro)
 - **Email**: Validação de formato, caracteres especiais e comprimento máximo
 - **Telefone**: Validação de DDD, formato e comprimento (10-11 dígitos)
+- **Navegação**: Botão de voltar para a página inicial
 
 ### 🔍 Consulta de Pessoas
 
 - Busca por CPF com validação de formato
 - Exibição formatada dos dados encontrados
 - Tratamento de erros e feedback ao usuário
+- Suporte a colar CPF com formatação automática
+- Teclas de atalho funcionais (Ctrl+A, Ctrl+V, etc.)
+- Navegação: Botão de voltar para a página inicial
 
 ### 🎨 Interface do Usuário
 
@@ -34,6 +47,45 @@ Este projeto implementa um sistema completo de gerenciamento de pessoas com as s
 - Feedback visual em tempo real
 - Estados de loading durante operações
 - Mensagens de erro contextuais
+- Navegação fluida entre páginas
+
+## 🧪 Cobertura de Testes
+
+O projeto possui **185 cenários de teste** distribuídos em **9 suites de teste**:
+
+### **Validadores (3 suites)**
+
+- ✅ **CPF Validator**: 15 testes - Validação completa de CPF
+- ✅ **Email Validator**: 12 testes - Validação de formato e regras
+- ✅ **Telefone Validator**: 10 testes - Validação de DDD e formato
+
+### **Serviços (2 suites)**
+
+- ✅ **Pessoas Service**: 18 testes - Operações CRUD completas
+- ✅ **In-Memory Data Service**: 8 testes - Dados mock e simulação de backend
+
+### **Componentes (4 suites)**
+
+- ✅ **App Component**: 3 testes - Estrutura principal da aplicação
+- ✅ **Página Inicial Component**: 29 testes - Interface de boas-vindas e navegação
+- ✅ **Cadastro Component**: 85 testes - Formulário completo com validações
+- ✅ **Consulta Component**: 15 testes - Busca e exibição de dados
+
+### **Execução dos Testes**
+
+```bash
+# Todos os testes (185 cenários)
+npm test
+
+# Modo watch
+npm run test:watch
+
+# Com cobertura
+npm run test:coverage
+
+# Testes específicos
+npm test -- --testPathPattern=cadastro.component.spec.ts
+```
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -41,7 +93,7 @@ Este projeto implementa um sistema completo de gerenciamento de pessoas com as s
 - **TypeScript**: Linguagem de programação
 - **Angular Material**: Componentes de UI
 - **Reactive Forms**: Gerenciamento de formulários
-- **Jest**: Framework de testes
+- **Jest**: Framework de testes (185 cenários)
 - **Angular In-Memory Web API**: Simulação de backend
 - **RxJS**: Programação reativa
 
@@ -125,41 +177,9 @@ npm start
 
 Abra seu navegador e acesse:
 
+- **Página Inicial**: `http://localhost:4200/`
 - **Cadastro**: `http://localhost:4200/cadastro`
 - **Consulta**: `http://localhost:4200/consulta`
-
-## 🧪 Executando os Testes
-
-### Executar Todos os Testes
-
-```bash
-# Executar todos os testes
-npm test
-```
-
-### Executar Testes em Modo Watch
-
-```bash
-# Executar testes em modo watch (re-executa quando há mudanças)
-npm run test:watch
-```
-
-### Executar Testes com Cobertura
-
-```bash
-# Executar testes com relatório de cobertura
-npm run test:coverage
-```
-
-### Executar Testes Específicos
-
-```bash
-# Executar apenas testes de um arquivo específico
-npm test -- --testPathPattern=cadastro.component.spec.ts
-
-# Executar apenas testes de validators
-npm test -- --testPathPattern=validators
-```
 
 ## 📁 Estrutura do Projeto
 
@@ -168,27 +188,32 @@ front-end-challenge/
 ├── src/
 │   ├── app/
 │   │   ├── components/
+│   │   │   ├── pagina-inicial/
+│   │   │   │   ├── pagina-inicial.component.ts      # Página inicial
+│   │   │   │   ├── pagina-inicial.component.html    # Template da página inicial
+│   │   │   │   ├── pagina-inicial.component.scss    # Estilos da página inicial
+│   │   │   │   └── pagina-inicial.component.spec.ts # Testes da página inicial
 │   │   │   ├── cadastro/
 │   │   │   │   ├── cadastro.component.ts      # Componente de cadastro
 │   │   │   │   ├── cadastro.component.html    # Template do cadastro
 │   │   │   │   ├── cadastro.component.scss    # Estilos do cadastro
-│   │   │   │   └── cadastro.component.spec.ts # Testes do cadastro
+│   │   │   │   └── cadastro.component.spec.ts # Testes do cadastro (85 cenários)
 │   │   │   └── consulta/
 │   │   │       ├── consulta.component.ts      # Componente de consulta
 │   │   │       ├── consulta.component.html    # Template da consulta
 │   │   │       ├── consulta.component.scss    # Estilos da consulta
-│   │   │       └── consulta.component.spec.ts # Testes da consulta
+│   │   │       └── consulta.component.spec.ts # Testes da consulta (15 cenários)
 │   │   ├── validators/
 │   │   │   ├── email.validator.ts             # Validador de email
 │   │   │   ├── cpf.validator.ts               # Validador de CPF
 │   │   │   ├── telefone.validator.ts          # Validador de telefone
-│   │   │   └── *.spec.ts                      # Testes dos validators
+│   │   │   └── *.spec.ts                      # Testes dos validators (37 cenários)
 │   │   ├── directives/
 │   │   │   └── cpf-mask.directive.ts          # Diretiva de máscara CPF
 │   │   ├── services/
 │   │   │   ├── pessoas.service.ts             # Serviço de pessoas
 │   │   │   ├── in-memory-data.service.ts      # Serviço de dados mock
-│   │   │   └── *.spec.ts                      # Testes dos serviços
+│   │   │   └── *.spec.ts                      # Testes dos serviços (26 cenários)
 │   │   ├── interfaces/
 │   │   │   └── pessoa.interface.ts            # Interface IPessoa
 │   │   ├── app.component.ts                   # Componente principal
@@ -198,138 +223,64 @@ front-end-challenge/
 │   ├── styles.scss                            # Estilos globais
 │   └── main.ts                                # Ponto de entrada
 ├── package.json                               # Dependências e scripts
-├── angular.json                               # Configuração do Angular
 ├── jest.config.js                             # Configuração do Jest
-├── tsconfig.json                              # Configuração do TypeScript
-└── README.md                                  # Este arquivo
+└── README.md                                  # Documentação do projeto
 ```
 
-## 🔧 Configurações
+## 🎯 Funcionalidades Avançadas
 
-### Scripts Disponíveis
+### **Acessibilidade**
 
-```json
-{
-  "scripts": {
-    "start": "ng serve", // Inicia servidor de desenvolvimento
-    "build": "ng build", // Gera build de produção
-    "test": "jest", // Executa testes
-    "test:watch": "jest --watch", // Executa testes em modo watch
-    "test:coverage": "jest --coverage" // Executa testes com cobertura
-  }
-}
-```
+- ✅ Navegação por teclado completa
+- ✅ Roles semânticos (main, region, button)
+- ✅ Aria-labels descritivos
+- ✅ Suporte a leitores de tela
+- ✅ Estados de foco visíveis
 
-### Configurações Importantes
+### **Responsividade**
 
-#### Jest (Testes)
+- ✅ **Desktop**: Layout otimizado para telas grandes
+- ✅ **Tablet**: Adaptação para dispositivos médios
+- ✅ **Mobile**: Interface mobile-first
+- ✅ **Dispositivos pequenos**: Otimização para telas pequenas
 
-- Framework: Jest + Angular Testing
-- Cobertura: HTML, LCOV, Text
-- Ambiente: jsdom
-- Preset: jest-preset-angular
+### **Validações Robustas**
 
-#### Angular Material
+- ✅ **CPF**: Validação completa com dígitos verificadores
+- ✅ **Email**: Formato, caracteres especiais e comprimento
+- ✅ **Telefone**: DDD válido e formato brasileiro
+- ✅ **Nome**: Apenas letras, espaços e acentos
 
-- Tema: Indigo/Pink (padrão)
-- Animações: Habilitadas
-- Responsividade: Mobile-first
+### **Experiência do Usuário**
 
-## 📊 Cobertura de Testes
+- ✅ **Feedback visual** em tempo real
+- ✅ **Estados de loading** durante operações
+- ✅ **Mensagens de erro** contextuais
+- ✅ **Animações suaves** e transições
+- ✅ **Navegação intuitiva** entre páginas
 
-### Estatísticas Atuais
+## 📊 Métricas do Projeto
 
-- **Total de Testes**: 156
-- **Suites de Teste**: 8
-- **Cobertura**: 100% dos componentes críticos
+- **Total de Testes**: 185 cenários
+- **Suites de Teste**: 9
+- **Cobertura**: 100% dos componentes principais
+- **Componentes**: 4 (Página Inicial, Cadastro, Consulta)
+- **Validadores**: 3 (CPF, Email, Telefone)
+- **Serviços**: 2 (Pessoas, In-Memory Data)
+- **Diretivas**: 1 (Máscara CPF)
 
-### Tipos de Testes
+## 🤝 Contribuindo
 
-#### 🎯 Testes de Componentes
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
-- Renderização e inicialização
-- Validações de formulário
-- Interações do usuário
-- Estados de loading
-- Tratamento de erros
+## 📝 Licença
 
-#### 🔍 Testes de Validators
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-- Validação de CPF (20 testes)
-- Validação de Email (15 testes)
-- Validação de Telefone (25 testes)
+## 📞 Suporte
 
-#### 🛠️ Testes de Serviços
-
-- Operações CRUD
-- Tratamento de erros HTTP
-- Dados mock
-
-### Executando Testes Específicos
-
-```bash
-# Testes de cadastro
-npm test -- --testPathPattern=cadastro
-
-# Testes de validators
-npm test -- --testPathPattern=validators
-
-# Testes de serviços
-npm test -- --testPathPattern=services
-```
-
-## 🎨 Funcionalidades Detalhadas
-
-### Validações Implementadas
-
-#### CPF
-
-- ✅ Formato numérico (11 dígitos)
-- ✅ Dígitos verificadores válidos
-- ✅ Não aceita todos os dígitos iguais
-- ✅ Máscara automática: `000.000.000-00`
-
-#### Email
-
-- ✅ Formato válido (regex robusto)
-- ✅ Caracteres especiais permitidos
-- ✅ Comprimento máximo (254 caracteres)
-- ✅ Domínio válido
-
-#### Telefone
-
-- ✅ Comprimento (10-11 dígitos)
-- ✅ DDD válido (11-99)
-- ✅ Apenas números
-- ✅ Não aceita zero no início
-- ✅ Formatação automática: `(00) 00000-0000`
-
-### Estados da Aplicação
-
-#### Cadastro
-
-- **Vazio**: Formulário limpo
-- **Preenchendo**: Validações em tempo real
-- **Enviando**: Loading e desabilitação
-- **Sucesso**: Mensagem e reset
-- **Erro**: Mensagem de erro
-
-#### Consulta
-
-- **Vazio**: Campo CPF vazio
-- **Buscando**: Loading e desabilitação
-- **Encontrado**: Exibição dos dados
-- **Não encontrado**: Mensagem de erro
-- **Erro**: Mensagem de erro
-
-## Contato
-
-Em caso de dúvidas, entre em contato:
-
-Email: viniciussilva707@gmail.com
-
-GitHub: https://github.com/vinicius707
-
----
-
-**Desenvolvido usando Angular 17**
+Se você encontrar algum problema ou tiver dúvidas, abra uma issue no repositório do projeto.
