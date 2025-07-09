@@ -1,4 +1,11 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  ValidationErrors,
+  AsyncValidatorFn,
+} from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { PessoasService } from '../services/pessoas.service';
 
 export class CpfValidator {
   /**
@@ -169,6 +176,29 @@ export class CpfValidator {
     }
 
     return null;
+  }
+
+  /**
+   * Validador assíncrono para verificar se o CPF já existe
+   */
+  static cpfExistsValidator(pessoasService: PessoasService): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+
+      const cpf = control.value.replace(/\D/g, '');
+
+      return pessoasService.getPessoas().pipe(
+        map((pessoas) => {
+          const cpfExists = pessoas.some((pessoa) => pessoa.cpf === cpf);
+          return cpfExists
+            ? { cpfAlreadyExists: { value: control.value } }
+            : null;
+        }),
+        catchError(() => of(null)) // Em caso de erro, não bloqueia o formulário
+      );
+    };
   }
 }
 

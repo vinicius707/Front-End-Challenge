@@ -42,7 +42,11 @@ export class CadastroComponent implements OnInit {
           Validators.pattern(/^[a-zA-ZÀ-ÿ\s]+$/),
         ],
       ],
-      cpf: ['', [Validators.required, cpfValidator.simpleCpfValidation]],
+      cpf: [
+        '',
+        [Validators.required, cpfValidator.simpleCpfValidation],
+        [cpfValidator.cpfExistsValidator(this.pessoasService)],
+      ],
       sexo: ['', Validators.required],
       email: [
         '',
@@ -169,6 +173,10 @@ export class CadastroComponent implements OnInit {
 
     if (control?.hasError('cpfWrongLength') && control?.touched) {
       return 'CPF deve ter exatamente 11 dígitos';
+    }
+
+    if (control?.hasError('cpfAlreadyExists') && control?.touched) {
+      return 'CPF já cadastrado no sistema';
     }
 
     // Validações customizadas de Email
